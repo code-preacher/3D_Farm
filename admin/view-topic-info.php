@@ -1,0 +1,124 @@
+<?php
+ob_start();
+require_once '../library/lib.php';
+require_once '../classes/crud.php';
+
+$lib=new Lib;
+$crud=new Crud;
+
+$lib->check_login2();
+
+ if (isset($_GET['id2'])) {
+    $crud->delete2($_GET['id'],$_GET['id2'],'topic_data','view-topic-info.php');
+     }
+?>
+
+
+              <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>FARM SYSTEM USING 3D VISUALIZATION TECHNOLOGY | Dashboard</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!-- Bootstrap 3.3.2 -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome Icons -->
+   <link href="../font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- Ionicons -->
+    <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Morris chart -->
+    <link href="../plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+    <!-- jvectormap -->
+    <link href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+        <!-- DATA TABLES -->
+    <link href="../plugins/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Daterange picker -->
+    <link href="../plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <!-- Theme style -->
+    <link href="../dist/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <!-- AdminLTE Skins. Choose a skin from the css/skins 
+         folder instead of downloading all of them to reduce the load. -->
+    <link href="../dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body class="skin-blue">
+    <div class="wrapper">
+      
+<?php
+include 'header.php';
+?>
+      <!-- Left side column. contains the logo and sidebar -->
+<?php
+include 'sidebar.php';
+?>
+
+      <!-- Right side column. Contains the navbar and content of the page -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+       <section class="content-header">
+          <h1>View Topic Info
+            <small></small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">View Topic Info</li>
+          </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+ <div class="col-md-4">
+                           <a href="view-topic-data.php" class="btn btn-success btn-block btn-flat"><i class="fa fa-arrow-left"></i>&nbsp;Back</a>
+                           </div>
+              <!-- Container fluid  -->
+            <div class="container-fluid">
+                <!-- Start Page Content -->
+
+
+ <?php
+     $qt=$crud->displayAllSpecificWithOrder('topic_data','topic_id',$_GET['id'],'id','asc');
+    $c=1;
+    if ($qt) {
+
+     foreach($qt as $dy){
+    ?>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+       					             	<div class="container-fluid">
+                            		<div class="row">
+                            		<h1><?=strtoupper($dy['heading'])?> | <a href="view-topic-info.php?id=<?=$_GET['id']?>&id2=<?=$dy['id']?>">DELETE</a></h1><hr>
+                               <center> <img src="../3D_images/<?=$dy['image']?>" width="800" height="500"></center>
+                                <hr><p style="color:#000;text-align: justify-all;"><?=ucfirst(strtolower($dy['info']))?></p>
+
+                            		</div>
+          
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+ <?php
+    }
+                    
+    } else {
+    echo "No Info at the Moment for this Topic";
+    }
+    ?>
+    
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+
+  <?php
+include 'footer.php';
+    ?>
+  </body>
+</html>
