@@ -315,7 +315,7 @@ class Crud extends Config
 // Inserting
 	public function insertChat($post,$id)
 	{
-		$msg = $this->cleanse($_POST['message']);
+		$msg = $this->cleanse($post['message']);
 		$admin= 'admin';
 		$user=$this->displayUser($id);
 		$user_id=$user['id'];
@@ -332,7 +332,7 @@ class Crud extends Config
 
 	public function insertChat2($post,$id)
 	{
-		$msg = $this->cleanse($_POST['message']);
+		$msg = $this->cleanse($post['message']);
 		$admin= 'admin';
 		$user=$this->displayUser($id);
 		$user_id=$user['id'];
@@ -349,8 +349,8 @@ class Crud extends Config
 
 	public function insertChat3($post)
 	{
-		$msg = $this->cleanse($_POST['message']);
-		$id= $this->cleanse($_POST['id']);
+		$msg = $this->cleanse($post['message']);
+		$id= $this->cleanse($post['id']);
 		$admin= 'admin';
 
 		$query="INSERT INTO chat(sender,reciever,message) VALUES('$admin','$id','$msg')";
@@ -369,12 +369,12 @@ class Crud extends Config
 
 	public function insertNewUser($post)
 	{
-		$name=$this->cleanse($_POST['name']);
-		$address=$this->cleanse($_POST['address']);
-		$gender=$this->cleanse($_POST['gender']);
-		$phone=$this->cleanse($_POST['phone']);
-		$email=$this->cleanse($_POST['email']);
-		$password=$this->cleanse($_POST['password']);
+		$name=$this->cleanse($post['name']);
+		$address=$this->cleanse($post['address']);
+		$gender=$this->cleanse($post['gender']);
+		$phone=$this->cleanse($post['phone']);
+		$email=$this->cleanse($post['email']);
+		$password=$this->cleanse($post['password']);
 		$date=date("d-m-y @ g:i A");
 		$query="insert into user(fullname,address,gender,phone,email,password,date_created) values('$name','$address','$gender','$phone','$email','$password','$date')";
 		$query2="insert into login(name,email,password,role) values('$name','$email','$password',3)";
@@ -391,7 +391,7 @@ class Crud extends Config
 
 	public function insertTopic($post)
 	{
-		$name=$this->cleanse($_POST['name']);
+		$name=$this->cleanse($post['name']);
 		$date=date("d-m-y @ g:i A");
 		$query="insert into topic(name,date_created) values('$name','$date')";
 		$sql = $this->con->query($query);
@@ -404,14 +404,14 @@ class Crud extends Config
 
 
 
-	public function insertTopicData($post,$files)
+	public function insertTopicData($post,$file)
 	{
-		$topic_id=$this->cleanse($_POST['topic_id']);
-		$heading=strtoupper($this->cleanse($_POST['heading']));
-		$info=strtoupper($this->cleanse($_POST['info']));
+		$topic_id=$this->cleanse($post['topic_id']);
+		$heading=strtoupper($this->cleanse($post['heading']));
+		$info=strtoupper($this->cleanse($post['info']));
 
-		$img1=$_FILES['img1']['name'];
-		$temp=$_FILES['img1']['tmp_name'];
+		$img1=$file['img1']['name'];
+		$temp=$file['img1']['tmp_name'];
 		$folder="../3D_images/" ;  
 		$pos1=strpos($img1,'.');
 		$len1=strlen($img1);
@@ -438,11 +438,11 @@ class Crud extends Config
 	{
 		$user=$this->displayUser($this->cleanse($id));
 		$uid=$user['id'];
-		$type=$this->cleanse($_POST['type']);
-		$qty=$this->cleanse($_POST['qty']);
+		$type=$this->cleanse($post['type']);
+		$qty=$this->cleanse($post['qty']);
 		$payment_ref=$this->cleanse($ref);
 		$charge=$this->displayCharge($type,$qty);
-		$location_id=$this->cleanse($_POST['location_id']);
+		$location_id=$this->cleanse($post['location_id']);
 		$location_charge_id=$this->displayChargeId($type);
 		$payment_status='0';
 		$delivery_status='0';
@@ -581,8 +581,8 @@ class Crud extends Config
 	public function updateAdmin($post)
 	{
 		
-		$email=$this->cleanse($_POST['email']);
-		$password=$this->cleanse($_POST['password']);
+		$email=$this->cleanse($post['email']);
+		$password=$this->cleanse($post['password']);
 		$query="UPDATE login SET password='$password' WHERE email='$email' ";
 		$sql=$this->con->query($query);
 		if ($sql==true) {
@@ -596,8 +596,8 @@ class Crud extends Config
 	public function updateUser($post)
 	{
 		
-		$email=$this->cleanse($_POST['email']);
-		$password=$this->cleanse($_POST['password']);
+		$email=$this->cleanse($post['email']);
+		$password=$this->cleanse($post['password']);
 		$query="UPDATE login SET password='$password' WHERE email='$email' ";
 		$query2="UPDATE user SET password='$password' WHERE email='$email' ";
 		$sql=$this->con->query($query);
@@ -674,11 +674,11 @@ class Crud extends Config
 //Mailing Function
 	public function mailing($post)
 	{
-		$name=$this->cleanse($_POST['name']);
-		$email=$this->cleanse($_POST['email']);
-		$phone=$this->cleanse($_POST['phone']);
-		$subject=$this->cleanse($_POST['subject']);
-		$text=$this->cleanse($_POST['message']);
+		$name=$this->cleanse($post['name']);
+		$email=$this->cleanse($post['email']);
+		$phone=$this->cleanse($post['phone']);
+		$subject=$this->cleanse($post['subject']);
+		$text=$this->cleanse($post['message']);
 
 		$headers = 'MIME-Version: 1.0' . "\r\n";
 		$headers .= "From: " . $email . "\r\n"; // Sender's E-mail  ---charset=iso-8859-1
